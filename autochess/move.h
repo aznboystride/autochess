@@ -3,18 +3,20 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 class Moves {
     public:
-        virtual MakeMove(std::string mv) = 0;
+        virtual MakeMove(string mv) = 0;
 };
 
 class MoveGraphically: public Moves {
     public:
-        MakeMove(std::string mv);
+        MakeMove(string mv);
 };
 
 class MoveUci: public Moves {
     public:
-        MakeMove(std::string mv);
+        MakeMove(string mv);
 };
 #endif

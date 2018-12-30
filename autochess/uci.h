@@ -8,7 +8,7 @@ using namespace std;
 
 class Uci {
     public:
-        void Move(
+        void Move(string move);
     private:
         Move* moveType;                
 };
