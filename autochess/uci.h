@@ -8,8 +8,11 @@ using namespace std;
 
 class Uci {
     public:
-        void Move(string move);
+        Uci();
+        void MakeMove(string move);
+        void Initialize();
     private:
-        Move* moveType;                
+        Move* moveType;
+        UCIReader* reader;
 };
 #endif
