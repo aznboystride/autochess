@@ -21,7 +21,7 @@ class Uci {
         Uci(string& path);
         void MakeMove(string move);
     private:
-        Move* moveType;
+        Moves* moveType;
         UCIReader* reader;
 };
 #endif

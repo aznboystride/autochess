@@ -20,7 +20,7 @@ string UCIReader::InsertCommand(string mv)
 Uci::Uci(string& path)
 {
     moveType = new MoveUci();
-    UCIReader = new UCIReader(path);
+    reader = new UCIReader(path);
 }
 
 void Uci::MakeMove(string move)
