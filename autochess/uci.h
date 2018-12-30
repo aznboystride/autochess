@@ -1,5 +1,6 @@
 #ifndef _uci_
 #define _uci_
+#include <Windows.h>
 #include "move.h"
 #include <iostream>
 #include <string>
@@ -14,7 +15,7 @@ class UCIReader
     private:
         string path;
 
-        void CreateProcess();
+        void CreateProc();
 };
 class Uci {
     public:

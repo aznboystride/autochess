@@ -3,12 +3,19 @@
 UCIReader::UCIReader(string& path)
 {
     this->path = path;
-    CreateProcess();
+    CreateProc();
 }
 
-void UCIReader::CreateProcess()
+void UCIReader::CreateProc()
 {
-    cout << "Creating Process With Fork On Path " << path << endl;
+    cout << "Creating Process  " << path << endl;
+	STARTUPINFO startInfo = { sizeof(STARTUPINFO) };
+	PROCESS_INFORMATION procInfo;
+	LPSTR lpstr = (char*) "python C:\\Users\\peynu\\Desktop\\Project6.py";
+	if (CreateProcess(NULL, lpstr, NULL, NULL, FALSE, NULL, NULL, NULL, &startInfo, &procInfo))
+		cout << "Success " << endl;
+	else
+		cout << "Failure " << GetLastError() << endl;
 }
 
 string UCIReader::InsertCommand(string mv)
