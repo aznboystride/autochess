@@ -7,16 +7,16 @@ using namespace std;
 
 class Moves {
     public:
-        virtual MakeMove(string mv) = 0;
+        virtual void MakeMove(string mv) = 0;
 };
 
 class MoveGraphically: public Moves {
     public:
-        MakeMove(string mv);
+        void MakeMove(string mv);
 };
 
 class MoveUci: public Moves {
     public:
-        MakeMove(string mv);
+        void MakeMove(string mv);
 };
 #endif
