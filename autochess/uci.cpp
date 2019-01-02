@@ -29,24 +29,28 @@ void UCIReader::CreateChildPipes()
     bSuccess = CreatePipe( &hStdInRd, &hStdInWr, &sAttr, 0 ); 
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
+		cin.get();
 		exit(1);
 	}
     
     bSuccess = CreatePipe( &hStdOutRd, &hStdOutWr, &sAttr, 0 );
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
+		cin.get();
 		exit(1);
 	}
 
     bSuccess = SetHandleInformation( &hStdInWr, HANDLE_FLAG_INHERIT, 0  );
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
+		cin.get();
 		exit(1);
 	}
     
     bSuccess = SetHandleInformation( &hStdOutRd, HANDLE_FLAG_INHERIT, 0  );
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
+		cin.get();
 		exit(1);
 	}
 
@@ -60,6 +64,7 @@ void UCIReader::WriteToPipe(const TCHAR* buff) const
 	bSuccess = WriteFile(hStdInWr, buff, strlen(buff), &bytesWritten, NULL);
 	if (!bSuccess) {
 		cout << "Error Exiting - WriteToPipe" << endl;
+		cin.get();
 		exit(1);
 	}
 }
@@ -81,6 +86,7 @@ void UCIReader::CreateChildProcess()
     bSuccess = CreateProcess(applicationPath, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
 	if (!bSuccess) {
 		cout << "Error Exiting - CreateProcess" << endl;
+		cin.get();
 		exit(1);
 	}
 		
@@ -99,6 +105,7 @@ void UCIReader::ReadFromPipe(CHAR* buff) const
     bSuccess = ReadFile( hStdOutRd, buff, 4096, &bytesWritten, NULL );
 	if (!bSuccess) {
 		cout << "Error Exiting - ReadFromPipe" << endl;
+		cin.get();
 		exit(1);
 	}
     buff[bytesWritten] = 0;
