@@ -3,6 +3,19 @@
 UCIReader::UCIReader(const TCHAR* applicationName) 
 { 
     this->applicationName = applicationName; 
+	CreateChildPipes();
+	CreateChildProcess();
+}
+
+string UCIReader::InsertCommand(string &inst) const
+{
+	TCHAR tInst[1024];
+	CHAR buff[1024];
+	_tcscpy_s(tInst, 1024, CA2T(inst.c_str()));
+	WriteToPipe(tInst);
+	ZeroMemory(tInst, 1024);
+	ReadFromPipe(buff);
+	return string(buff, strlen(buff));
 }
 
 void UCIReader::CreateChildPipes()
@@ -78,7 +91,7 @@ void UCIReader::CreateChildProcess()
 }
 
 
-void UCIReader::ReadFromPipe(CHAR* buff)
+void UCIReader::ReadFromPipe(CHAR* buff) const
 {
     BOOL bSuccess = FALSE;
     DWORD bytesWritten;

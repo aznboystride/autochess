@@ -4,6 +4,7 @@
 #include "move.h"
 #include <iostream>
 #include <string>
+#include <atlstr.h>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class UCIReader
 		void CreateChildProcess();
 		void CreateChildPipes();
 		void WriteToPipe(const TCHAR*) const;
-		void ReadFromPipe(CHAR*);
+		void ReadFromPipe(CHAR*) const;
 };
 class Uci {
     public:
