@@ -78,7 +78,7 @@ void UCIReader::CreateChildProcess()
     startupInfo.hStdInput = hStdInRd;
     startupInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-    bSuccess = CreateProcess(applicationName, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
+    bSuccess = CreateProcess(applicationPath, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
 	if (!bSuccess) {
 		cout << "Error Exiting - CreateProcess" << endl;
 		exit(1);
@@ -104,14 +104,18 @@ void UCIReader::ReadFromPipe(CHAR* buff) const
     buff[bytesWritten] = 0;
 }
 
-Uci::Uci(string& path)
+Uci::Uci(string& applicationName, string& applicationPath)
 {
+	TCHAR name[1024];
+	TCHAR path[1024];
+	_tcscpy_s(name, 1024, applicationName.c_str());
+	_tcscpy_s(path, 1024, applicationPath.c_str());
     moveType = new MoveUci();
-    reader = new UCIReader(path);
+    reader = new UCIReader(name, path);
 }
 
-void Uci::MakeMove(string move)
+void Uci::MakeMove(string& instr)
 {
-    moveType->MakeMove(move);
+    moveType->MakeMove(instr);
 }
 

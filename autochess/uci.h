@@ -24,8 +24,8 @@ class UCIReader
 };
 class Uci {
     public:
-        Uci(string& path);
-        void MakeMove(string move);
+        Uci(string&, string&);
+        void MakeMove(string&);
     private:
         Moves* moveType;
         UCIReader* reader;
