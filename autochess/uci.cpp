@@ -6,7 +6,7 @@ UCIReader::UCIReader(string& path)
     CreateProc();
 }
 
-void UCIReader::CreateChildProcess(const TCHAR* applicationName, HANDLE hStdError, HANDLE hStdOut, HANDLE hStdIn)
+void UCIReader::CreateChildProcess(const TCHAR* applicationName)
 {
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startupInfo;

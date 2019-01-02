@@ -14,7 +14,7 @@ class UCIReader
         string InsertCommand(string mv);
     private:
         string path;
-
+        HANDLE hStdOut, hStdIn, hStdError;
         void CreateChildProcess(const TCHAR*);
         void WriteToPipe();
         void ReadFromPipe();
