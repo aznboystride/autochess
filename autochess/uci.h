@@ -11,10 +11,11 @@ using namespace std;
 class UCIReader
 {
     public:
-        UCIReader(const TCHAR*);
+        UCIReader(TCHAR*, TCHAR*);
         string InsertCommand(string&) const;
     private:
-		const TCHAR* applicationName;
+		TCHAR* applicationName;
+		TCHAR* applicationPath;
 		HANDLE hStdInWr, hStdInRd, hStdOutWr, hStdOutRd;
 		void CreateChildProcess();
 		void CreateChildPipes();

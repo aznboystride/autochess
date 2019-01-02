@@ -1,8 +1,9 @@
 #include "uci.h" 
 
-UCIReader::UCIReader(const TCHAR* applicationName) 
+UCIReader::UCIReader(TCHAR* applicationName, TCHAR* applicationPath) 
 { 
     this->applicationName = applicationName; 
+	this->applicationPath = applicationPath;
 	CreateChildPipes();
 	CreateChildProcess();
 }
