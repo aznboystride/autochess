@@ -1,12 +1,11 @@
 #include "uci.h" 
 
-UCIReader::UCIReader(string& path) 
+UCIReader::UCIReader(const TCHAR* applicationName) 
 { 
-    this->path = path; 
-  
-} 
+    this->applicationName = applicationName; 
+}
 
-void UCIReader::CreateChildPipes() 
+void UCIReader::CreateChildPipes()
 { 
     SECURITY_ATTRIBUTES sAttr = { sizeof(SECURITY_ATTRIBUTES)  };
     sAttr.lpSecurityDescriptor = NULL; 
@@ -14,25 +13,44 @@ void UCIReader::CreateChildPipes()
     BOOL bSuccess = FALSE; 
     
     bSuccess = CreatePipe( &hStdInRd, &hStdInWr, &sAttr, 0 ); 
-    if( !bSuccess  ) 
-        ErrorExit(TEXT("CreatePipe"));
+	if (!bSuccess) {
+		cout << "Error Exiting - SetHandleInformation" << endl;
+		exit(1);
+	}
     
     bSuccess = CreatePipe( &hStdOutRd, &hStdOutWr, &sAttr, 0 );
-    if( !bSuccess  )
-        ErrorExit(TEXT("CreatePipe"));
+	if (!bSuccess) {
+		cout << "Error Exiting - SetHandleInformation" << endl;
+		exit(1);
+	}
 
     bSuccess = SetHandleInformation( &hStdInWr, HANDLE_FLAG_INHERIT, 0  );
-    if( !bSuccess )
-        ErrorExit(TEXT("SetHandleInformation"));
+	if (!bSuccess) {
+		cout << "Error Exiting - SetHandleInformation" << endl;
+		exit(1);
+	}
     
     bSuccess = SetHandleInformation( &hStdOutRd, HANDLE_FLAG_INHERIT, 0  );
-    if( !bSuccess  )
-        ErrorExit(TEXT("SetHandleInformation"));
+	if (!bSuccess) {
+		cout << "Error Exiting - SetHandleInformation" << endl;
+		exit(1);
+	}
 
      
 }
 
-void UCIReader::CreateChildProcess(const TCHAR* applicationName)
+void UCIReader::WriteToPipe(const TCHAR* buff) const
+{
+	BOOL bSuccess = FALSE;
+	DWORD bytesWritten;
+	bSuccess = WriteFile(hStdInWr, buff, strlen(buff), &bytesWritten, NULL);
+	if (!bSuccess) {
+		cout << "Error Exiting - WriteToPipe" << endl;
+		exit(1);
+	}
+}
+
+void UCIReader::CreateChildProcess()
 {
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startupInfo;
@@ -46,9 +64,12 @@ void UCIReader::CreateChildProcess(const TCHAR* applicationName)
     startupInfo.hStdInput = hStdInRd;
     startupInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-    bSuccess = CreateProcess(applicationName, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
-    if( !bSuccess )
-        ErrorExit(TEXT("CreateProcess"));
+    bSuccess = CreateProcess(applicationName, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
+	if (!bSuccess) {
+		cout << "Error Exiting - CreateProcess" << endl;
+		exit(1);
+	}
+		
     else
     {
         CloseHandle(procInfo.hProcess);
@@ -56,30 +77,17 @@ void UCIReader::CreateChildProcess(const TCHAR* applicationName)
     }
 }
 
-void UCIReader::WriteToPipe(CHAR* buff)
-{
-    BOOL bSuccess = FALSE;
-    DWORD bytesWritten;
-    bSuccess = WriteFile( hStdInWr, buff, strlen(buff), &bytesWritten, NULL );
-    if ( !bSuccess  )
-        ErrorExit( TEXT("WriteToPipe")  );
-}
 
-void UCIReader::ReadFromPipe()
+void UCIReader::ReadFromPipe(CHAR* buff)
 {
     BOOL bSuccess = FALSE;
     DWORD bytesWritten;
-    CHAR buff[4096];
     bSuccess = ReadFile( hStdOutRd, buff, 4096, &bytesWritten, NULL );
-    if( !bSuccess )
-        ErrorExit( TEXT("ReadFromPipe") );
+	if (!bSuccess) {
+		cout << "Error Exiting - ReadFromPipe" << endl;
+		exit(1);
+	}
     buff[bytesWritten] = 0;
-}
-
-string UCIReader::InsertCommand(string mv)
-{
-    cout << "inserted command" << endl;
-    return "command inserted :)";
 }
 
 Uci::Uci(string& path)

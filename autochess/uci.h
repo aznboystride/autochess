@@ -10,15 +10,15 @@ using namespace std;
 class UCIReader
 {
     public:
-        UCIReader(string& path);
-        string InsertCommand(string mv);
+        UCIReader(const TCHAR*);
+        string InsertCommand(string&) const;
     private:
-        string path;
-        HANDLE hStdOut, hStdIn, hStdError;
-        void CreateChildProcess(const TCHAR*);
-        void WriteToPipe();
-        void ReadFromPipe();
-        
+		const TCHAR* applicationName;
+		HANDLE hStdInWr, hStdInRd, hStdOutWr, hStdOutRd;
+		void CreateChildProcess();
+		void CreateChildPipes();
+		void WriteToPipe(const TCHAR*) const;
+		void ReadFromPipe(CHAR*);
 };
 class Uci {
     public:
