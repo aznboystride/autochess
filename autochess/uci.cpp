@@ -40,14 +40,15 @@ void UCIReader::CreateChildPipes()
 		exit(1);
 	}
 
-    bSuccess = SetHandleInformation( &hStdInWr, HANDLE_FLAG_INHERIT, 0  );
+    bSuccess = SetHandleInformation( hStdInWr, HANDLE_FLAG_INHERIT, 0  );
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
+		cout << GetLastError() << endl;
 		cin.get();
 		exit(1);
 	}
     
-    bSuccess = SetHandleInformation( &hStdOutRd, HANDLE_FLAG_INHERIT, 0  );
+    bSuccess = SetHandleInformation( hStdOutRd, HANDLE_FLAG_INHERIT, 0  );
 	if (!bSuccess) {
 		cout << "Error Exiting - SetHandleInformation" << endl;
 		cin.get();
