@@ -15,7 +15,10 @@ class UCIReader
     private:
         string path;
 
-        void CreateProc();
+        void CreateChildProcess(const TCHAR*);
+        void WriteToPipe();
+        void ReadFromPipe();
+        
 };
 class Uci {
     public:

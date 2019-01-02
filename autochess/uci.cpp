@@ -6,25 +6,28 @@ UCIReader::UCIReader(string& path)
     CreateProc();
 }
 
-void UCIReader::CreateProc()
+void UCIReader::CreateChildProcess(const TCHAR* applicationName, HANDLE hStdError, HANDLE hStdOut, HANDLE hStdIn)
 {
-    cout << "Creating Process  " << path << endl;
-	OFSTRUCT of;
-	STARTUPINFO startInfo = { sizeof(STARTUPINFO) };
-	startInfo.lpTitle = (char*) "TITLE OF SCREEN";
-	startInfo.dwFlags = STARTF_USESTDHANDLES;
-	startInfo.hStdOutput = (HANDLE) OpenFile("mytextlolfile.txt", &of, OF_WRITE);
-	if (startInfo.hStdOutput == (HANDLE) HFILE_ERROR) {
-		cout << "FAIL" << endl;
-		cout << GetLastError() << endl;
-		cin.get();
-	}
-	PROCESS_INFORMATION procInfo;
-	LPSTR lpstr = (char*) "python lol.py";
-	if (CreateProcess(NULL, lpstr, NULL, NULL, FALSE, 0, NULL, NULL, &startInfo, &procInfo))
-		cout << "Success " << endl;
-	else
-		cout << "Failure " << GetLastError() << endl;
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startupInfo;
+    BOOL bSuccess = FALSE;
+
+    ZeroMemory(&procInfo, sizeof(PROCESS_INFORMATION));
+    ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
+    startupInfo.cb = sizeof(STARTUPINFO);
+    startupInfo.hStdError = hStdError;
+    startupInfo.hStdOutput = hStdOut;
+    startupInfo.hStdInput = hStdIn;
+    startupInfo.dwFlags |= STARTF_USESTDHANDLES;
+
+    bSuccess = CreateProcess(applicationName, NULL, NULL, TRUE, 0, NULL, NULL, &startupInfo, &procInfo);
+    if( !bSuccess )
+        ErrorExit(TEXT("CreateProcess"));
+    else
+    {
+        CloseHandle(procInfo.hProcess);
+        CloseHandle(procInfo.hThread);
+    }
 }
 
 string UCIReader::InsertCommand(string mv)
