@@ -6,6 +6,10 @@
 #include <string>
 #include <atlstr.h>
 
+#ifndef BUFFSIZE
+#define BUFFSIZE 4096
+#endif
+
 using namespace std;
 
 class UCIReader

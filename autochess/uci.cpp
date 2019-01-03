@@ -10,11 +10,11 @@ UCIReader::UCIReader(TCHAR* applicationName, TCHAR* applicationPath)
 
 string UCIReader::InsertCommand(string &inst) const
 {
-	TCHAR tInst[1024];
-	CHAR buff[1024];
-	_tcscpy_s(tInst, 1024, CA2T(inst.c_str()));
+	TCHAR tInst[BUFFSIZE];
+	CHAR buff[BUFFSIZE];
+	_tcscpy_s(tInst, BUFFSIZE, CA2T(inst.c_str()));
 	WriteToPipe(tInst);
-	ZeroMemory(tInst, 1024);
+	ZeroMemory(buff, BUFFSIZE);
 	ReadFromPipe(buff);
 	return string(buff, strlen(buff));
 }
@@ -103,9 +103,9 @@ void UCIReader::ReadFromPipe(CHAR* buff) const
 {
     BOOL bSuccess = FALSE;
     DWORD bytesWritten;
-    bSuccess = ReadFile( hStdOutRd, buff, 4096, &bytesWritten, NULL );
+    bSuccess = ReadFile( hStdOutRd, buff, BUFFSIZE, &bytesWritten, NULL );
 	if (!bSuccess) {
-		cout << "Error Exiting - ReadFromPipe" << endl;
+		cout << "Error Exiting - ReadFromPipe " << GetLastError() << endl;
 		cin.get();
 		exit(1);
 	}
@@ -124,6 +124,7 @@ Uci::Uci(string& applicationName, string& applicationPath)
 
 void Uci::MakeMove(string& instr)
 {
+	cout << reader->InsertCommand(instr) << endl;
     moveType->MakeMove(instr);
 }
 
