@@ -14,7 +14,7 @@ string UCIReader::InsertCommand(string &inst) const
 	CHAR buff[BUFFSIZE];
 	_tcscpy_s(tInst, BUFFSIZE, CA2T(inst.c_str()));
 	WriteToPipe(tInst);
-	ZeroMemory(buff, BUFFSIZE);
+	Sleep(220);
 	ReadFromPipe(buff);
 	return string(buff, strlen(buff));
 }
