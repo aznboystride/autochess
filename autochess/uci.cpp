@@ -124,7 +124,13 @@ Uci::Uci(string& applicationName, string& applicationPath)
 
 void Uci::MakeMove(string& instr)
 {
-	cout << reader->InsertCommand(instr) << endl;
+	stringstream stream(reader->InsertCommand(instr), ios_base::in);
+	string lastLine;
+	string temp;
+	while (getline(stream, temp))
+		lastLine = temp;
+	cout << lastLine << endl;
+	cin.get();
     moveType->MakeMove(instr);
 }
 
