@@ -118,19 +118,12 @@ Uci::Uci(string& applicationName, string& applicationPath)
 	TCHAR path[1024];
 	_tcscpy_s(name, 1024, applicationName.c_str());
 	_tcscpy_s(path, 1024, applicationPath.c_str());
-    moveType = new MoveUci();
-    reader = new UCIReader(name, path);
+	reader = new UCIReader(name, path);
+    moveType = new MoveUci(reader);
 }
 
 void Uci::MakeMove(string& instr)
 {
-	stringstream stream(reader->InsertCommand(instr), ios_base::in);
-	string lastLine;
-	string temp;
-	while (getline(stream, temp))
-		lastLine = temp;
-	cout << lastLine << endl;
-	cin.get();
     moveType->MakeMove(instr);
 }
 

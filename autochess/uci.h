@@ -4,7 +4,6 @@
 #include "move.h"
 #include <iostream>
 #include <string>
-#include<sstream>
 #include <atlstr.h>
 
 #ifndef BUFFSIZE
@@ -12,6 +11,8 @@
 #endif
 
 using namespace std;
+
+class Moves;
 
 class UCIReader
 {
