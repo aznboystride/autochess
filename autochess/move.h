@@ -2,6 +2,7 @@
 #define _move_
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "uci.h"
 
 using namespace std;

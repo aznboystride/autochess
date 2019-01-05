@@ -18,4 +18,10 @@ MoveUci::MoveUci(UCIReader* reader)
 void MoveUci::MakeMove(string& instr)
 {
 	cout << "Making Move Locally " << instr << endl;
+	string response = reader->InsertCommand(instr);
+	stringstream sd(response, ios_base::in);
+	string temp;
+	while (getline(sd, temp))
+		response = temp;
+	cout << "Response: " << response << endl;
 }
